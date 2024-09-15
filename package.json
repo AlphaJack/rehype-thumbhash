@@ -1,0 +1,46 @@
+{
+    "name": "rehype-thumbhash",
+    "version": "1.0.0",
+    "description": "rehype plugin to set the thumbhash of local images to the data-thumbhash img attribute",
+    "license": "MIT",
+    "keywords": [
+        "rehype",
+        "rehype-plugin",
+        "thumbhash",
+        "image",
+        "html",
+        "optimization"
+    ],
+    "repository": "Alphajack/rehype-thumbhash",
+    "bugs": "https://github.com/AlphaJack/rehype-thumbhash/issues",
+    "author": {
+        "name": "AlphaJack",
+        "email": "alphajack@tuta.io",
+        "url": "https://github.com/AlphaJack"
+    },
+    "type": "module",
+    "main": "index.js",
+    "types": "./index.d.ts",
+    "files": [
+        "index.js",
+        "index.d.ts"
+    ],
+    "scripts": {
+        "test": "node test.js"
+    },
+    "exports": {
+        "import": "./index.js"
+    },
+    "devDependencies": {
+        "unified": "^11.0.3",
+        "rehype": "^13.0.1",
+        "rehype-parse": "^9.0.0",
+        "rehype-stringify": "^10.0.0"
+    },
+    "dependencies": {
+        "sharp": "^0.33.5",
+        "rehype": "^13.0.1",
+        "thumbhash": "^0.1.1",
+        "unist-util-visit": "^5.0.0"
+    }
+}
