@@ -1,6 +1,5 @@
 import { visit } from "unist-util-visit";
 import { rgbaToThumbHash, thumbHashToDataURL } from "thumbhash";
-//import { createCanvas, loadImage } from "@napi-rs/canvas";
 import sharp from "sharp";
 import path from "path";
 
@@ -133,30 +132,3 @@ async function downscaleImageSharp(src) {
   const { width, height } = info;
   return { width, height, rgbaPixels };
 }
-
-/**
- * Downscale an image to fit within a square of size 100x100.
- * @param {string} src - The path to the image file.
- * @returns {Promise<{width: number, height: number, rgbaPixels: Uint8Array}>}
- *     The downscaled image dimensions and its raw RGBA pixel data.
- */
-/*
-async function downscaleImageCanvas(src) {
-  const maxSize = 100;
-  const image = await loadImage(src);
-  const width = image.width;
-  const height = image.height;
-
-  const scale = Math.min(maxSize / width, maxSize / height);
-  const resizedWidth = Math.floor(width * scale);
-  const resizedHeight = Math.floor(height * scale);
-
-  const canvas = createCanvas(resizedWidth, resizedHeight);
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(image, 0, 0, resizedWidth, resizedHeight);
-
-  const imageData = ctx.getImageData(0, 0, resizedWidth, resizedHeight);
-  const rgba = new Uint8Array(imageData.data.buffer);
-  return { resizedWidth, resizedHeight, rgba };
-}
-*/
