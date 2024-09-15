@@ -26,3 +26,9 @@ rehype()
     console.log(String(file));
   });
 ```
+
+Expected output:
+
+```html
+<html><head></head><body><img src="example.jpg" data-thumbhash="ZhgODYKHh3l/ioh0d5hohkVtEOYG"></body></html>
+```
