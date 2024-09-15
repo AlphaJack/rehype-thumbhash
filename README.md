@@ -1,7 +1,8 @@
 # rehype-thumbhash
 
-A [rehype](https://github.com/rehypejs/rehype) plugin that generates [thumbhash](https://github.com/evanw/thumbhash) hashes for **local** images and adds them as `data-thumbhash` attributes. 
-These hashes can be then used client-side to generate fast-loading thumbnails.
+A [rehype](https://github.com/rehypejs/rehype) plugin that generates [thumbhash](https://github.com/evanw/thumbhash) hashes for **local** images and adds them as `data-thumbhash` attributes.  
+These hashes can be then used client-side to generate fast-loading thumbnails.  
+Images are downsized with [sharp](https://www.npmjs.com/package/sharp) before being hashed.
 
 ## Install
 
