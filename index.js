@@ -101,7 +101,6 @@ async function getImageThumbhash(src, dir) {
     const thumbhashBinary = rgbaToThumbHash(resizedWidth, resizedHeight, rgba);
     //const thumbhashBase64 = Buffer.from(thumbhashBinary).toString('base64');
     const thumbhashDataURL = thumbHashToDataURL(thumbhashBinary);
-
     return thumbhashDataURL;
   } catch (error) {
     console.error(
@@ -130,5 +129,5 @@ async function downscaleImageSharp(src) {
     .raw()
     .toBuffer({ resolveWithObject: true });
   const { width, height } = info;
-  return { width, height, rgbaPixels };
+  return { resizedWidth: width, resizedHeight: height, rgba: rgbaPixels };
 }
