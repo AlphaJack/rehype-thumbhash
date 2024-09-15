@@ -1,8 +1,7 @@
 # rehype-thumbhash
 
-A [rehype](https://github.com/rehypejs/rehype) plugin that generates [thumbhash](https://github.com/evanw/thumbhash) hashes for **local** images and adds them as `data-thumbhash` attributes.  
-These hashes can be then used client-side to generate fast-loading thumbnails.  
-Images are downsized with [sharp](https://www.npmjs.com/package/sharp) before being hashed.
+A [rehype](https://github.com/rehypejs/rehype) plugin that generates small thumbnails using from **local** images using [sharp](https://www.npmjs.com/package/sharp) and [thumbhash](https://github.com/evanw/thumbhash), and adds stores as `data-thumbhash` attributes.  
+These thumbnails can then be used by client-side libraries such as [lazysizes](https://github.com/aFarkas/lazysizes?tab=readme-ov-file#lqipblurry-image-placeholderblur-up-image-technique).
 
 ## Install
 
@@ -12,16 +11,20 @@ npm install rehype-thumbhash
 
 ## Options
 
-- `dir` (optional): prefix to local images
+Optional:
+
+- `dir`: prefix to local images
+- `originalAttribute`: attribute where to store the original `src`. Defaults to `src`.
+- `thumbhashAttribute`: attribute where to store the thumbhash image. Defaults to `data-thumbhash`.
 
 ## Usage
 
 ```js
-import { rehype } from 'rehype';
-import rehypeThumbhash from 'rehypeThumbhash';
+import { rehype } from "rehype";
+import rehypeThumbhash from "rehypeThumbhash";
 
 rehype()
-  .use(rehypeThumbhash, { dir: './' })
+  .use(rehypeThumbhash, { dir: "./" })
   .process('<img src="example.jpg">', function (err, file) {
     if (err) throw err;
     console.log(String(file));
@@ -31,5 +34,13 @@ rehype()
 Expected output:
 
 ```html
-<html><head></head><body><img src="example.jpg" data-thumbhash="ZhgODYKHh3l/ioh0d5hohkVtEOYG"></body></html>
+<html>
+  <head></head>
+  <body>
+    <img
+      src="example.jpg"
+      data-thumbhash="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAAAAAAgCAYAAAA8J3kkAAAAxklEQVR4AQABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAABAP7/AAEBAP7/AAAgAAHflHy2AAAAAElFTkSuQmCC"
+    />
+  </body>
+</html>
 ```
