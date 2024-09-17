@@ -7,11 +7,15 @@ export interface Options {
    */
   dir?: string;
   /**
+   * The thumbhash format to display (hash / url).
+   */
+  format?: "hash" | "url";
+  /**
    * The attribute where to store the original image path.
    */
   originalAttribute?: string;
   /**
-   * The attribute where to store the thumbhash base64 png image
+   * The attribute where to store the thumbhash base64 png image.
    */
   thumbhashAttribute?: string;
 }

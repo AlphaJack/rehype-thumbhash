@@ -28,6 +28,7 @@ const absolutePathRegex = /^(?:[a-z]+:)?\/\//;
 function setImageThumbhash(options) {
   const opts = options || {};
   const dir = opts.dir;
+  const format = opts.format || "hash";
   const originalAttribute = opts.originalAttribute || "src";
   const thumbhashAttribute = opts.thumbhashAttribute || "data-thumbhash";
   const thumbhashCache = {};
@@ -50,7 +51,7 @@ function setImageThumbhash(options) {
         // Check if thumbhash is already in cache
         let thumbhashDataURL = thumbhashCache[src];
         if (!thumbhashDataURL) {
-          thumbhashDataURL = (await getImageThumbhash(src, dir)) || "";
+          thumbhashDataURL = (await getImageThumbhash(src, dir, format)) || "";
           thumbhashCache[src] = thumbhashDataURL;
         }
 
@@ -74,7 +75,7 @@ function setImageThumbhash(options) {
  * @returns {Promise<string|null>} The thumbhash as a base64-encoded string,
  *     or `null` if the image could not be processed.
  */
-async function getImageThumbhash(src, dir) {
+async function getImageThumbhash(src, dir, format) {
   try {
     if (!src) {
       console.error("[rehype-thumbhash] Image src is undefined or null.");
@@ -97,11 +98,16 @@ async function getImageThumbhash(src, dir) {
       await downscaleImageSharp(src);
     //const { resizedWidth, resizedHeight, rgba } = await downscaleImageCanvas(src)
 
-    // Generate thumbhash
+    // Generate thumbhash based on specified format
     const thumbhashBinary = rgbaToThumbHash(resizedWidth, resizedHeight, rgba);
-    //const thumbhashBase64 = Buffer.from(thumbhashBinary).toString('base64');
-    const thumbhashDataURL = thumbHashToDataURL(thumbhashBinary);
-    return thumbhashDataURL;
+    let thumbhashFormatted = null;
+    if (format == "url") {
+      thumbhashFormatted = thumbHashToDataURL(thumbhashBinary);
+    } else {
+      thumbhashFormatted =
+        Buffer.from(thumbhashBinary).toString("base64");
+    }
+    return thumbhashFormatted;
   } catch (error) {
     console.error(
       "[rehype-thumbhash] Skipped processing image due to error:",
