@@ -3,7 +3,10 @@ import { rgbaToThumbHash, thumbHashToDataURL } from "thumbhash";
 import sharp from "sharp";
 import path from "path";
 
+// usage
 export default setImageThumbhash;
+// test
+export { getImageThumbhash, downscaleImageSharp };
 
 const absolutePathRegex = /^(?:[a-z]+:)?\/\//;
 
@@ -76,36 +79,33 @@ function setImageThumbhash(options) {
  *     or `null` if the image could not be processed.
  */
 async function getImageThumbhash(src, dir, format) {
+  let thumbhashFormatted = null;
+  if (!src || absolutePathRegex.test(src)) {
+    // Skip undefined images or absolute URLS
+    return null;
+  }
+
+  // Determine if path should be joined with the directory
+  const shouldJoin = !path.isAbsolute(src) || src.startsWith("/");
+  if (dir && shouldJoin) {
+    src = path.join(dir, src);
+  }
+
   try {
-    if (!src) {
-      console.error("[rehype-thumbhash] Image src is undefined or null.");
-      return null;
-    }
-
-    if (absolutePathRegex.test(src)) {
-      // Skip absolute URLs
-      return null;
-    }
-
-    // Determine if path should be joined with the directory
-    const shouldJoin = !path.isAbsolute(src) || src.startsWith("/");
-    if (dir && shouldJoin) {
-      src = path.join(dir, src);
-    }
-
     // Thumbhash doesn't support images larger than 100x100, so we downscale it
     const { resizedWidth, resizedHeight, rgba } =
       await downscaleImageSharp(src);
-    //const { resizedWidth, resizedHeight, rgba } = await downscaleImageCanvas(src)
 
     // Generate thumbhash based on specified format
     const thumbhashBinary = rgbaToThumbHash(resizedWidth, resizedHeight, rgba);
-    let thumbhashFormatted = null;
-    if (format == "url") {
+
+    // Return desider format
+    if (format === "url") {
       thumbhashFormatted = thumbHashToDataURL(thumbhashBinary);
+    } else if (format === "hash") {
+      thumbhashFormatted = Buffer.from(thumbhashBinary).toString("base64");
     } else {
-      thumbhashFormatted =
-        Buffer.from(thumbhashBinary).toString("base64");
+      thumbhashFormatted = null;
     }
     return thumbhashFormatted;
   } catch (error) {
@@ -123,13 +123,12 @@ async function getImageThumbhash(src, dir, format) {
  * rotated if necessary, resized with the "inside" fit strategy, and ensured
  * to have an alpha channel.
  * @param {string} src - The path to the image file.
- * @returns {Promise<{width: number, height: number, rgbaPixels: Uint8Array}>}
+ * @returns {Promise<{resizedWidth: number, resizedHeight: number, rgba: Uint8Array}>}
  *     The downscaled image dimensions and its raw RGBA pixel data.
  */
 async function downscaleImageSharp(src) {
-  const maxSize = 100;
   let image = sharp(src).rotate();
-  image = image.resize(maxSize, maxSize, { fit: "inside" });
+  image = image.resize(100, 100, { fit: "inside" });
   image = image.ensureAlpha();
   const { data: rgbaPixels, info } = await image
     .raw()
