@@ -28,14 +28,15 @@
   "scripts": {
     "ci": "npm run format && npm run test",
     "format": "prettier --write .",
-    "test": "node test.js"
+    "test": "vitest"
   },
   "exports": {
     "import": "./index.js"
   },
   "devDependencies": {
     "prettier": "^3.3.3",
-    "rehype": "^13.0.1"
+    "rehype": "^13.0.1",
+    "vitest": "^2.1.1"
   },
   "dependencies": {
     "rehype": "^13.0.1",
