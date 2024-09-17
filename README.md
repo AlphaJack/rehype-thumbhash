@@ -14,8 +14,9 @@ npm install rehype-thumbhash
 Optional:
 
 - `dir`: prefix to local images
-- `originalAttribute`: attribute where to store the original `src`. Defaults to `src`.
-- `thumbhashAttribute`: attribute where to store the thumbhash image. Defaults to `data-thumbhash`.
+- `format`: thumbhash format, either "hash" or "url". Defaults to "hash".
+- `originalAttribute`: attribute where to store the original "src". Defaults to "src".
+- `thumbhashAttribute`: attribute where to store the thumbhash image. Defaults to "data-thumbhash".
 
 ## Usage
 
