@@ -40,7 +40,7 @@ Expected output:
   <body>
     <img
       src="example.jpg"
-      data-thumbhash="data:image/png;base64,iVBORw0KGgoAAA..."
+      data-thumbhash="ZhgODYKHh3l/ioh0d5hohkVtEOYG"
     />
   </body>
 </html>
