@@ -18,19 +18,23 @@
   },
   "repository": "AlphaJack/rehype-thumbhash",
   "files": [
-    "index.js",
-    "index.d.ts"
+    "dist"
   ],
   "type": "module",
-  "main": "index.js",
-  "types": "./index.d.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
-    "import": "./index.js"
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
   },
   "scripts": {
+    "build": "vp pack",
     "check": "vp check",
     "fix": "vp check --fix",
-    "test": "vp test"
+    "test": "vp test",
+    "prepack": "vp pack"
   },
   "dependencies": {
     "@types/hast": "^3.0.5",
@@ -40,6 +44,7 @@
     "unist-util-visit": "^5.2.0"
   },
   "devDependencies": {
+    "@types/node": "^22.20.5",
     "rehype": "^13.0.2",
     "vite-plus": "1.4.0"
   },

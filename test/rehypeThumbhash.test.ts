@@ -1,8 +1,8 @@
-// test/rehypeThumbhash.test.js
+// test/rehypeThumbhash.test.ts
 
 import { describe, it, expect } from "vite-plus/test";
 import { rehype } from "rehype";
-import rehypeThumbhash from "../index.js";
+import rehypeThumbhash from "../src/index.ts";
 
 describe("rehypeThumbhash Plugin", () => {
   it("should process image with url format", async () => {
@@ -47,6 +47,7 @@ describe("rehypeThumbhash Plugin", () => {
   });
 
   it("should reject an invalid format", () => {
+    // @ts-expect-error: invalid format on purpose
     expect(() => rehype().use(rehypeThumbhash, { format: "png" }).freeze()).toThrow(
       /Invalid format/,
     );

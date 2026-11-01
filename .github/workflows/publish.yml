@@ -35,6 +35,9 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      - name: Build
+        run: pnpm build
+
       - name: Publish to npm
         # the tag checkout is a detached HEAD, which pnpm's branch check rejects
         run: pnpm publish --no-git-checks
