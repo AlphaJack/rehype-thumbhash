@@ -2,7 +2,7 @@
 
 import { describe, it, expect } from "vitest";
 import { rehype } from "rehype";
-import rehypeThumbhash from "./index.js";
+import rehypeThumbhash from "../index.js";
 
 describe("rehypeThumbhash Plugin", () => {
   it("should process image with url format", async () => {
@@ -35,5 +35,22 @@ describe("rehypeThumbhash Plugin", () => {
     expect(output).toBe(expectedOutput);
     const shortOutput = output.substring(0, 100) + "...";
     console.log("Test passed:", shortOutput);
+  });
+
+  it("should process repeated images once", async () => {
+    const file = await rehype()
+      .use(rehypeThumbhash, { dir: "./" })
+      .process('<img src="example.jpg"><img src="example.jpg">');
+
+    const matches = String(file).match(
+      /data-thumbhash="ZhgODYKHh3l\/ioh0d5hohkVtEOYG"/g,
+    );
+    expect(matches).toHaveLength(2);
+  });
+
+  it("should reject an invalid format", () => {
+    expect(() =>
+      rehype().use(rehypeThumbhash, { format: "png" }).freeze(),
+    ).toThrow(/Invalid format/);
   });
 });

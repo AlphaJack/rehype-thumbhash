@@ -24,6 +24,7 @@ const absolutePathRegex = /^(?:[a-z]+:)?\/\//;
  *
  * @param {Object} options - Plugin options
  * @param {string} [options.dir] - Directory containing the images
+ * @param {"hash"|"url"} [options.format] - Thumbhash format
  * @param {string} [options.originalAttribute] - Attribute pointing to the original image
  * @param {string} [options.thumbhashAttribute] - Attribute pointing to the thumbhash image
  * @returns {Function} A transformer function to be used with rehype
@@ -34,9 +35,15 @@ function setImageThumbhash(options) {
   const format = opts.format || "hash";
   const originalAttribute = opts.originalAttribute || "src";
   const thumbhashAttribute = opts.thumbhashAttribute || "data-thumbhash";
-  const thumbhashCache = {};
+  const thumbhashCache = new Map();
 
-  return async function transformer(tree, file) {
+  if (format !== "hash" && format !== "url") {
+    throw new Error(
+      `[rehype-thumbhash] Invalid format "${format}", expected "hash" or "url"`,
+    );
+  }
+
+  return async function transformer(tree) {
     const images = [];
 
     // Collect all image nodes
@@ -51,20 +58,16 @@ function setImageThumbhash(options) {
       images.map(async (node) => {
         const src = node.properties.src;
 
-        // Check if thumbhash is already in cache
-        let thumbhashDataURL = thumbhashCache[src];
-        if (!thumbhashDataURL) {
-          thumbhashDataURL = (await getImageThumbhash(src, dir, format)) || "";
-          thumbhashCache[src] = thumbhashDataURL;
+        // Cache the promise, so repeated images are processed only once,
+        // including concurrent ones and failures
+        if (!thumbhashCache.has(src)) {
+          thumbhashCache.set(src, getImageThumbhash(src, dir, format));
         }
+        const thumbhash = await thumbhashCache.get(src);
 
-        // Ensure properties object exists
-        if (!node.properties) {
-          node.properties = {};
-        }
-        if (thumbhashDataURL !== "") {
+        if (thumbhash) {
           node.properties[originalAttribute] = src;
-          node.properties[thumbhashAttribute] = thumbhashDataURL;
+          node.properties[thumbhashAttribute] = thumbhash;
         }
       }),
     );
@@ -75,11 +78,11 @@ function setImageThumbhash(options) {
  * Asynchronously generates a thumbhash for a given image file.
  * @param {string} src - The path to the image file.
  * @param {string} [dir] - The directory containing the image file.
- * @returns {Promise<string|null>} The thumbhash as a base64-encoded string,
+ * @param {"hash"|"url"} [format] - Base64 hash or PNG data URL.
+ * @returns {Promise<string|null>} The thumbhash in the given format,
  *     or `null` if the image could not be processed.
  */
-async function getImageThumbhash(src, dir, format) {
-  let thumbhashFormatted = null;
+async function getImageThumbhash(src, dir, format = "hash") {
   if (!src || absolutePathRegex.test(src)) {
     // Skip undefined images or absolute URLS
     return null;
@@ -99,15 +102,10 @@ async function getImageThumbhash(src, dir, format) {
     // Generate thumbhash based on specified format
     const thumbhashBinary = rgbaToThumbHash(resizedWidth, resizedHeight, rgba);
 
-    // Return desider format
-    if (format === "url") {
-      thumbhashFormatted = thumbHashToDataURL(thumbhashBinary);
-    } else if (format === "hash") {
-      thumbhashFormatted = Buffer.from(thumbhashBinary).toString("base64");
-    } else {
-      thumbhashFormatted = null;
-    }
-    return thumbhashFormatted;
+    // Return desired format
+    return format === "url"
+      ? thumbHashToDataURL(thumbhashBinary)
+      : Buffer.from(thumbhashBinary).toString("base64");
   } catch (error) {
     console.error(
       "[rehype-thumbhash] Skipped processing image due to error:",
