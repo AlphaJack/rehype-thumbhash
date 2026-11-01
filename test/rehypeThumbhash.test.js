@@ -1,6 +1,6 @@
 // test/rehypeThumbhash.test.js
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { rehype } from "rehype";
 import rehypeThumbhash from "../index.js";
 
@@ -42,15 +42,13 @@ describe("rehypeThumbhash Plugin", () => {
       .use(rehypeThumbhash, { dir: "./" })
       .process('<img src="example.jpg"><img src="example.jpg">');
 
-    const matches = String(file).match(
-      /data-thumbhash="ZhgODYKHh3l\/ioh0d5hohkVtEOYG"/g,
-    );
+    const matches = String(file).match(/data-thumbhash="ZhgODYKHh3l\/ioh0d5hohkVtEOYG"/g);
     expect(matches).toHaveLength(2);
   });
 
   it("should reject an invalid format", () => {
-    expect(() =>
-      rehype().use(rehypeThumbhash, { format: "png" }).freeze(),
-    ).toThrow(/Invalid format/);
+    expect(() => rehype().use(rehypeThumbhash, { format: "png" }).freeze()).toThrow(
+      /Invalid format/,
+    );
   });
 });

@@ -2,41 +2,36 @@
   "name": "rehype-thumbhash",
   "version": "1.2.0",
   "description": "rehype plugin to set the thumbhash of local images to the data-thumbhash img attribute",
-  "license": "MIT",
   "keywords": [
+    "html",
+    "image",
+    "optimization",
     "rehype",
     "rehype-plugin",
-    "thumbhash",
-    "image",
-    "html",
-    "optimization"
+    "thumbhash"
   ],
-  "repository": "AlphaJack/rehype-thumbhash",
   "bugs": "https://github.com/AlphaJack/rehype-thumbhash/issues",
+  "license": "MIT",
   "author": {
     "name": "AlphaJack",
     "email": "alphajack@tuta.io",
     "url": "https://github.com/AlphaJack"
   },
-  "type": "module",
-  "main": "index.js",
-  "types": "./index.d.ts",
+  "repository": "AlphaJack/rehype-thumbhash",
   "files": [
     "index.js",
     "index.d.ts"
   ],
-  "scripts": {
-    "ci": "npm run format && npm run test",
-    "format": "prettier --write .",
-    "test": "vitest run"
-  },
+  "type": "module",
+  "main": "index.js",
+  "types": "./index.d.ts",
   "exports": {
     "import": "./index.js"
   },
-  "devDependencies": {
-    "prettier": "^3.9.10",
-    "rehype": "^13.0.2",
-    "vitest": "^5.0.5"
+  "scripts": {
+    "check": "vp check",
+    "fix": "vp check --fix",
+    "test": "vp test"
   },
   "dependencies": {
     "@types/hast": "^3.0.5",
@@ -45,7 +40,12 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.2.0"
   },
+  "devDependencies": {
+    "rehype": "^13.0.2",
+    "vite-plus": "1.4.0"
+  },
   "engines": {
     "node": ">=20.9.0"
-  }
+  },
+  "packageManager": "pnpm@12.15.0"
 }
