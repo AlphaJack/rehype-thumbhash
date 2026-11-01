@@ -40,6 +40,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Stage the release on npm
-        # the trusted publisher only allows staged publishes: approve them on npmjs.com or with `npm stage approve`
-        run: npx --yes npm@12 stage publish --provenance
+      - name: Publish to npm
+        # npm's own CLI, as trusted publishing rejected the token pnpm requested
+        run: npx --yes npm@12 publish --provenance
