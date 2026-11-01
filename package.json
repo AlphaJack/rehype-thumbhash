@@ -14,7 +14,6 @@
   "license": "MIT",
   "author": {
     "name": "AlphaJack",
-    "email": "alphajack@tuta.io",
     "url": "https://github.com/AlphaJack"
   },
   "repository": "AlphaJack/rehype-thumbhash",
