@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      # lets pnpm authenticate to npm via OIDC trusted publishing and generate provenance
+      id-token: write
     steps:
       - name: Check out the tag
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -41,5 +43,3 @@ jobs:
       - name: Publish to npm
         # the tag checkout is a detached HEAD, which pnpm's branch check rejects
         run: pnpm publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

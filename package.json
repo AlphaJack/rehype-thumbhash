@@ -29,6 +29,9 @@
       "import": "./dist/index.mjs"
     }
   },
+  "publishConfig": {
+    "provenance": true
+  },
   "scripts": {
     "build": "vp pack",
     "check": "vp check",
