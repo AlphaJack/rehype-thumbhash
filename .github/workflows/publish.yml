@@ -40,6 +40,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Publish to npm
-        # the tag checkout is a detached HEAD, which pnpm's branch check rejects
-        run: pnpm publish --no-git-checks
+      - name: Stage the release on npm
+        # the trusted publisher only allows staged publishes: approve them on npmjs.com or with `npm stage approve`
+        run: npx --yes npm@12 stage publish --provenance
