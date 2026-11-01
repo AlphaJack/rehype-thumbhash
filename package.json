@@ -11,7 +11,7 @@
     "html",
     "optimization"
   ],
-  "repository": "Alphajack/rehype-thumbhash",
+  "repository": "AlphaJack/rehype-thumbhash",
   "bugs": "https://github.com/AlphaJack/rehype-thumbhash/issues",
   "author": {
     "name": "AlphaJack",
@@ -28,20 +28,24 @@
   "scripts": {
     "ci": "npm run format && npm run test",
     "format": "prettier --write .",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "exports": {
     "import": "./index.js"
   },
   "devDependencies": {
-    "prettier": "^3.3.3",
-    "rehype": "^13.0.1",
-    "vitest": "^2.1.1"
+    "prettier": "^3.9.10",
+    "rehype": "^13.0.2",
+    "vitest": "^5.0.5"
   },
   "dependencies": {
-    "rehype": "^13.0.1",
-    "sharp": "^0.33.5",
+    "@types/hast": "^3.0.5",
+    "sharp": "^0.35.5",
     "thumbhash": "^0.1.1",
-    "unist-util-visit": "^5.0.0"
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.2.0"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }
