@@ -38,9 +38,7 @@ function setImageThumbhash(options) {
   const thumbhashCache = new Map();
 
   if (format !== "hash" && format !== "url") {
-    throw new Error(
-      `[rehype-thumbhash] Invalid format "${format}", expected "hash" or "url"`,
-    );
+    throw new Error(`[rehype-thumbhash] Invalid format "${format}", expected "hash" or "url"`);
   }
 
   return async function transformer(tree) {
@@ -96,8 +94,7 @@ async function getImageThumbhash(src, dir, format = "hash") {
 
   try {
     // Thumbhash doesn't support images larger than 100x100, so we downscale it
-    const { resizedWidth, resizedHeight, rgba } =
-      await downscaleImageSharp(src);
+    const { resizedWidth, resizedHeight, rgba } = await downscaleImageSharp(src);
 
     // Generate thumbhash based on specified format
     const thumbhashBinary = rgbaToThumbHash(resizedWidth, resizedHeight, rgba);
@@ -107,10 +104,7 @@ async function getImageThumbhash(src, dir, format = "hash") {
       ? thumbHashToDataURL(thumbhashBinary)
       : Buffer.from(thumbhashBinary).toString("base64");
   } catch (error) {
-    console.error(
-      "[rehype-thumbhash] Skipped processing image due to error:",
-      src,
-    );
+    console.error("[rehype-thumbhash] Skipped processing image due to error:", src);
     console.debug(error);
     return null;
   }
@@ -128,9 +122,7 @@ async function downscaleImageSharp(src) {
   let image = sharp(src).rotate();
   image = image.resize(100, 100, { fit: "inside" });
   image = image.ensureAlpha();
-  const { data: rgbaPixels, info } = await image
-    .raw()
-    .toBuffer({ resolveWithObject: true });
+  const { data: rgbaPixels, info } = await image.raw().toBuffer({ resolveWithObject: true });
   const { width, height } = info;
   return { resizedWidth: width, resizedHeight: height, rgba: rgbaPixels };
 }

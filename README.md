@@ -38,10 +38,7 @@ Expected output:
 <html>
   <head></head>
   <body>
-    <img
-      src="example.jpg"
-      data-thumbhash="ZhgODYKHh3l/ioh0d5hohkVtEOYG"
-    />
+    <img src="example.jpg" data-thumbhash="ZhgODYKHh3l/ioh0d5hohkVtEOYG" />
   </body>
 </html>
 ```
